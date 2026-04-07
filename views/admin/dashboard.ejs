@@ -1,0 +1,82 @@
+<%- include('partials/top', { pageTitle: 'Dashboard', currentPage: 'dashboard' }) %>
+
+<div class="admin-page-header">
+  <h1>Dashboard</h1>
+</div>
+
+<!-- Stats grid -->
+<div class="stats-grid">
+  <div class="stat-card stat-primary">
+    <div class="stat-value">$<%= mrr %></div>
+    <div class="stat-label">Monthly Recurring Revenue</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= active %></div>
+    <div class="stat-label">Active Subscribers</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">+<%= newThisWeek %></div>
+    <div class="stat-label">New This Week</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= growthRate %>%</div>
+    <div class="stat-label">Weekly Growth Rate</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= churnedThisMonth %></div>
+    <div class="stat-label">Cancelled This Month</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= pastDue %></div>
+    <div class="stat-label">Past Due</div>
+  </div>
+</div>
+
+<!-- Recent newsletters -->
+<div class="admin-section">
+  <div class="admin-section-header">
+    <h2>Recent newsletters</h2>
+    <div class="admin-section-actions">
+      <a href="/admin/newsletters/upload" class="btn btn-sm btn-primary">Upload new issue</a>
+      <a href="/admin/newsletters" class="btn btn-sm btn-ghost">View all</a>
+    </div>
+  </div>
+  <% if (recentNewsletters.length === 0) { %>
+    <div class="empty-state">
+      <p>No newsletters yet. <a href="/admin/newsletters/upload">Upload your first issue</a>.</p>
+    </div>
+  <% } else { %>
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Subject</th>
+        <th>Published</th>
+        <th>Status</th>
+        <th>Recipients</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% recentNewsletters.forEach(function(n) { %>
+      <tr>
+        <td><span class="table-issue-num">#<%= n.issue_number %></span></td>
+        <td><strong><%= n.subject %></strong></td>
+        <td><%= new Date(n.published_at).toLocaleDateString('en-CA', { month:'short', day:'numeric', year:'numeric' }) %></td>
+        <td>
+          <% if (n.sent_at) { %>
+            <span class="status-badge status-active">Sent</span>
+          <% } else { %>
+            <span class="status-badge status-pending">Draft</span>
+          <% } %>
+        </td>
+        <td><%= n.recipient_count || '—' %></td>
+        <td><a href="/admin/newsletters/<%= n.id %>" class="table-link">Manage →</a></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  <% } %>
+</div>
+
+<%- include('partials/bottom') %>

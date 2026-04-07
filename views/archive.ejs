@@ -1,0 +1,35 @@
+<%- include('partials/head', { title: 'Archive' }) %>
+<%- include('partials/nav') %>
+
+<div class="page-hero container">
+  <h1>Archive</h1>
+  <p>Every issue of The Real Scoop, all in one place.</p>
+</div>
+
+<div class="container archive-container">
+  <% if (issues.length === 0) { %>
+    <div class="empty-state">
+      <p>No issues published yet. The first one is on its way.</p>
+    </div>
+  <% } else { %>
+    <div class="archive-list">
+      <% issues.forEach(function(issue) { %>
+        <a href="/issues/<%= issue.id %>" class="archive-item">
+          <div class="archive-item-left">
+            <span class="archive-issue-num">Issue #<%= issue.issue_number %></span>
+            <h3 class="archive-item-title"><%= issue.subject %></h3>
+            <% if (issue.preview_text) { %>
+              <p class="archive-item-excerpt"><%= issue.preview_text %></p>
+            <% } %>
+          </div>
+          <div class="archive-item-right">
+            <span class="archive-date"><%= new Date(issue.published_at).toLocaleDateString('en-CA', { year:'numeric', month:'short', day:'numeric' }) %></span>
+            <span class="archive-read">Read →</span>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

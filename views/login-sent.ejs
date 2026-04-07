@@ -1,0 +1,21 @@
+<%- include('partials/head', { title: 'Check your email' }) %>
+<%- include('partials/nav') %>
+
+<div class="auth-page">
+  <div class="auth-card auth-card-center">
+    <div class="auth-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+    </div>
+    <h1 class="auth-title">Check your inbox</h1>
+    <p class="auth-sub">
+      We sent a login link to <strong><%= email %></strong>.<br>
+      Click the link in that email to log in. It expires in 15 minutes.
+    </p>
+    <p class="auth-note">Didn't get it? Check your spam folder, or <a href="/login">try again</a>.</p>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,307 @@
+<%- include('partials/head', { title: null }) %>
+<%- include('partials/nav') %>
+
+<% if (error === 'email' || error === 'name') { %>
+  <div class="alert alert-error">
+    <% if (error === 'name') { %>Please enter your full name.<% } %>
+    <% if (error === 'email') { %>Please enter a valid email address.<% } %>
+  </div>
+<% } %>
+<% if (cancelled) { %>
+  <div class="alert alert-info">No worries — you can subscribe anytime.</div>
+<% } %>
+
+<!-- ─── Hero ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-inner">
+    <div class="hero-badge">Weekly · GTA Real Estate · Est. 2024</div>
+    <h1 class="hero-headline">
+      The Market Brief<br>Every Serious GTA<br>Agent Needs
+    </h1>
+    <p class="hero-sub">
+      Benchmark prices, absorption rates, active listings, and the key trends for the 416 and 905 — delivered every week, without the noise.
+    </p>
+    <div class="hero-cta">
+      <a href="#subscribe" class="btn btn-gold btn-lg">Subscribe for $9.99/month</a>
+      <a href="#issues" class="btn btn-ghost btn-lg">See recent issues</a>
+    </div>
+    <div class="hero-social-proof">
+      <div class="proof-stat">
+        <strong><%= totalSubscribers > 0 ? totalSubscribers + '+' : '—' %></strong>
+        <span>active subscribers</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <strong>Weekly</strong>
+        <span>every Monday morning</span>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-stat">
+        <strong>Cancel</strong>
+        <span>anytime, instantly</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Recent Issues ─────────────────────────────────────────────────────── -->
+<section class="section section-light" id="issues">
+  <div class="container">
+    <div class="section-header">
+      <h2>Recent Issues</h2>
+      <p>See what lands in your inbox every Monday.</p>
+    </div>
+
+    <% if (recentIssues.length === 0) { %>
+      <div class="empty-state">
+        <p>The first issue is coming soon. Subscribe to be first in line.</p>
+      </div>
+    <% } else { %>
+    <div class="issues-grid">
+      <% recentIssues.forEach(function(issue) { %>
+      <div class="issue-card">
+        <div class="issue-card-meta">
+          <span class="issue-badge">Issue #<%= issue.issue_number %></span>
+          <span class="issue-date"><%= new Date(issue.published_at).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }) %></span>
+        </div>
+        <h3 class="issue-card-title"><%= issue.subject %></h3>
+        <% if (issue.preview_text) { %>
+          <p class="issue-card-excerpt"><%= issue.preview_text %></p>
+        <% } %>
+
+        <!-- Newsletter preview iframe -->
+        <div class="issue-preview-wrap">
+          <iframe
+            src="/issues/<%= issue.id %>/render?preview=true"
+            class="issue-preview-frame"
+            sandbox="allow-same-origin"
+            scrolling="no"
+            title="Issue #<%= issue.issue_number %> preview"
+            loading="lazy">
+          </iframe>
+          <div class="issue-preview-fade"></div>
+        </div>
+
+        <div class="issue-card-footer">
+          <% if (locals.subscriberId) { %>
+            <a href="/issues/<%= issue.id %>" class="btn btn-sm btn-outline">Read full issue</a>
+          <% } else { %>
+            <a href="/issues/<%= issue.id %>" class="btn btn-sm btn-outline">Preview issue</a>
+          <% } %>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- ─── What You Get ──────────────────────────────────────────────────────── -->
+<section class="section section-navy">
+  <div class="container">
+    <div class="section-header light">
+      <h2>What's inside every issue</h2>
+      <p>Exactly what you need to advise clients confidently — nothing more.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg>
+        </div>
+        <h4>Benchmark Prices</h4>
+        <p>MLS HPI benchmark prices by property type and district — 416 and 905 broken out.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h4>Absorption Rate</h4>
+        <p>Months of inventory so you know instantly whether it's a buyer's or seller's market.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h4>Days on Market</h4>
+        <p>Average DOM by segment and neighbourhood — know what's sitting and what's moving.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20V10M18 20V4M6 20v-6"/></svg>
+        </div>
+        <h4>Sales Volume</h4>
+        <p>Week-over-week and year-over-year transaction counts across every major sub-market.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h4>List-to-Sale Ratio</h4>
+        <p>How close homes are selling to ask — critical for setting pricing strategy with sellers.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <h4>Key Takeaways</h4>
+        <p>Three bullet-point insights you can quote directly to clients — ready for your next call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── How It Works ──────────────────────────────────────────────────────── -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <h2>Simple as it gets</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h4>Subscribe in 60 seconds</h4>
+        <p>Enter your name and email, pay securely via Stripe. $9.99/month, cancel anytime.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h4>Arrives Monday morning</h4>
+        <p>Every Monday before 7 AM, the week's market brief lands in your inbox — ready before your first client call.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h4>Stay sharp all week</h4>
+        <p>Access the full archive anytime to pull historical data or review a past week's numbers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Pricing ───────────────────────────────────────────────────────────── -->
+<section class="section section-off-white" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <h2>One plan. One price.</h2>
+      <p>No tiers, no upsells. Everything for $9.99/month.</p>
+    </div>
+    <div class="pricing-card-wrap">
+      <div class="pricing-card">
+        <div class="pricing-top">
+          <div class="pricing-name">The Real Scoop</div>
+          <div class="pricing-amount">
+            <span class="pricing-currency">$</span>9.99
+            <span class="pricing-period">/month</span>
+          </div>
+          <div class="pricing-note">Billed monthly · Cancel anytime</div>
+        </div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Weekly GTA market brief every Monday</li>
+          <li><span class="check">✓</span> 416 + 905 benchmark prices & trends</li>
+          <li><span class="check">✓</span> Absorption rate, DOM, list-to-sale ratio</li>
+          <li><span class="check">✓</span> Full archive access (all past issues)</li>
+          <li><span class="check">✓</span> Key takeaways you can quote to clients</li>
+          <li><span class="check">✓</span> Cancel anytime — no lock-in</li>
+        </ul>
+        <div id="subscribe" class="pricing-form">
+          <form action="/subscribe" method="POST" class="subscribe-form">
+            <div class="form-group">
+              <label for="subscribe-name">Your name</label>
+              <input type="text" id="subscribe-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="subscribe-email">Email address</label>
+              <input type="email" id="subscribe-email" name="email" placeholder="jane@brokerage.com" required autocomplete="email">
+            </div>
+            <button type="submit" class="btn btn-gold btn-full btn-lg">
+              Subscribe for $9.99/month
+            </button>
+            <p class="form-note">Secure payment via Stripe. Cancel anytime from your account.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Testimonials ──────────────────────────────────────────────────────── -->
+<section class="section section-white">
+  <div class="container">
+    <div class="section-header">
+      <h2>Trusted by agents across the GTA</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">Placeholder testimonial — I use The Real Scoop every Monday before my client meetings. It saves me an hour of pulling data myself and I always sound sharp.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">Agent Name Here</div>
+          <div class="testimonial-title">REALTOR®, RE/MAX — Toronto</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">Placeholder testimonial — The absorption rate and days-on-market data alone is worth 10x what I pay. My sellers finally understand why I'm pricing the way I am.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">Agent Name Here</div>
+          <div class="testimonial-title">Broker, Century 21 — Mississauga</div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">Placeholder testimonial — Concise, accurate, and actually readable. I've tried every market report out there — The Real Scoop is the only one I look forward to.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-name">Agent Name Here</div>
+          <div class="testimonial-title">Sales Rep, Royal LePage — Markham</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ───────────────────────────────────────────────────────────────── -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-header">
+      <h2>Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>When does each issue arrive?</summary>
+        <p>Every Monday morning before 7 AM Eastern. You'll have it before your first client call of the week.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What markets are covered?</summary>
+        <p>The Greater Toronto Area — both the 416 (City of Toronto) and the 905 region (Mississauga, Brampton, Markham, Vaughan, Oakville, Burlington, and surrounding markets). Data sourced from TRREB.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I cancel anytime?</summary>
+        <p>Yes. Cancel from your account page at any time — you'll retain access through the end of your current billing period, then your subscription ends. No questions asked.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I access back issues?</summary>
+        <p>Yes. Active subscribers have full access to the complete archive of every issue ever published.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is this affiliated with TRREB or any brokerage?</summary>
+        <p>No. The Real Scoop is an independent publication. Data is sourced from publicly available TRREB reports and compiled into a clean, readable format.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How is my payment handled?</summary>
+        <p>Payments are processed securely by Stripe. We never see or store your card details. Your subscription renews automatically each month until you cancel.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Final CTA ─────────────────────────────────────────────────────────── -->
+<section class="section section-navy cta-section">
+  <div class="container">
+    <h2 class="cta-headline">Start this Monday.</h2>
+    <p class="cta-sub">Join the agents who show up to every client meeting with the numbers that matter.</p>
+    <a href="#subscribe" class="btn btn-gold btn-lg">Subscribe — $9.99/month</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

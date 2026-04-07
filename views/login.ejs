@@ -1,0 +1,35 @@
+<%- include('partials/head', { title: 'Login' }) %>
+<%- include('partials/nav') %>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">The Real Scoop</div>
+    <h1 class="auth-title">Subscriber login</h1>
+
+    <% if (reason === 'already_subscribed') { %>
+      <div class="alert alert-info">You already have an active subscription. Log in below.</div>
+    <% } else if (reason === 'inactive') { %>
+      <div class="alert alert-warning">Your subscription is inactive. <a href="/#subscribe">Subscribe</a> to regain access.</div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <p class="auth-sub">Enter your email and we'll send you a one-click login link — no password needed.</p>
+
+    <form action="/login" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@brokerage.com" required autocomplete="email" autofocus>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Send login link</button>
+    </form>
+
+    <p class="auth-footer-note">
+      Don't have a subscription? <a href="/#subscribe">Subscribe for $9.99/month</a>
+    </p>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

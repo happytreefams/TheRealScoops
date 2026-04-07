@@ -1,0 +1,65 @@
+<%- include('partials/head', { title: 'My Account' }) %>
+<%- include('partials/nav') %>
+
+<div class="page-hero container">
+  <h1>My Account</h1>
+</div>
+
+<div class="container account-container">
+  <% if (message) { %>
+    <div class="alert alert-success"><%= message %></div>
+  <% } %>
+  <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <div class="account-grid">
+    <div class="account-card">
+      <h3>Subscription details</h3>
+      <div class="account-detail-row">
+        <span class="detail-label">Name</span>
+        <span class="detail-value"><%= subscriber.name %></span>
+      </div>
+      <div class="account-detail-row">
+        <span class="detail-label">Email</span>
+        <span class="detail-value"><%= subscriber.email %></span>
+      </div>
+      <div class="account-detail-row">
+        <span class="detail-label">Status</span>
+        <span class="status-badge status-<%= subscriber.status %>">
+          <%= subscriber.status.charAt(0).toUpperCase() + subscriber.status.slice(1) %>
+        </span>
+      </div>
+      <div class="account-detail-row">
+        <span class="detail-label">Member since</span>
+        <span class="detail-value"><%= new Date(subscriber.created_at).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }) %></span>
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h3>Quick links</h3>
+      <div class="account-links">
+        <a href="/archive" class="account-link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M4 6h16M4 10h16M4 14h8"/></svg>
+          Browse the full archive
+        </a>
+        <a href="/logout" class="account-link-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Log out
+        </a>
+      </div>
+    </div>
+
+    <% if (subscriber.status === 'active') { %>
+    <div class="account-card account-card-danger">
+      <h3>Cancel subscription</h3>
+      <p>Your subscription will remain active through the end of your current billing period. You won't be charged again.</p>
+      <form action="/account/cancel" method="POST" onsubmit="return confirm('Are you sure you want to cancel your subscription?')">
+        <button type="submit" class="btn btn-danger">Cancel subscription</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

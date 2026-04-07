@@ -1,0 +1,55 @@
+<%- include('partials/top', { pageTitle: 'Newsletters', currentPage: 'newsletters' }) %>
+
+<div class="admin-page-header">
+  <h1>Newsletters</h1>
+  <div class="admin-page-actions">
+    <a href="/admin/newsletters/upload" class="btn btn-sm btn-primary">Upload new issue</a>
+  </div>
+</div>
+
+<% if (message === 'uploaded') { %>
+  <div class="alert alert-success">Issue uploaded successfully.</div>
+<% } %>
+
+<% if (newsletters.length === 0) { %>
+  <div class="empty-state">
+    <p>No issues yet. <a href="/admin/newsletters/upload">Upload your first issue</a>.</p>
+  </div>
+<% } else { %>
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Subject</th>
+        <th>Published</th>
+        <th>Status</th>
+        <th>Sent</th>
+        <th>Recipients</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% newsletters.forEach(function(n) { %>
+      <tr>
+        <td><span class="table-issue-num">#<%= n.issue_number %></span></td>
+        <td><strong><%= n.subject %></strong></td>
+        <td><%= new Date(n.published_at).toLocaleDateString('en-CA', { year:'numeric', month:'short', day:'numeric' }) %></td>
+        <td>
+          <% if (n.sent_at) { %>
+            <span class="status-badge status-active">Sent</span>
+          <% } else { %>
+            <span class="status-badge status-pending">Draft</span>
+          <% } %>
+        </td>
+        <td><%= n.sent_at ? new Date(n.sent_at).toLocaleDateString('en-CA', { month:'short', day:'numeric' }) : '—' %></td>
+        <td><%= n.recipient_count || '—' %></td>
+        <td><a href="/admin/newsletters/<%= n.id %>" class="table-link">Manage →</a></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<% } %>
+
+<%- include('partials/bottom') %>

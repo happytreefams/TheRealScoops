@@ -1,0 +1,93 @@
+<%- include('partials/top', { pageTitle: 'Subscribers', currentPage: 'subscribers' }) %>
+
+<div class="admin-page-header">
+  <h1>Subscribers</h1>
+  <div class="admin-page-actions">
+    <a href="/admin/subscribers/export" class="btn btn-sm btn-ghost">Export CSV</a>
+  </div>
+</div>
+
+<div class="admin-filter-bar">
+  <input type="text" id="subscriber-search" placeholder="Search by name or email..." class="search-input">
+  <select id="status-filter" class="filter-select">
+    <option value="">All statuses</option>
+    <option value="active">Active</option>
+    <option value="cancelled">Cancelled</option>
+    <option value="past_due">Past due</option>
+    <option value="pending">Pending</option>
+  </select>
+</div>
+
+<% if (subscribers.length === 0) { %>
+  <div class="empty-state">
+    <p>No subscribers yet. Share your landing page to start growing.</p>
+  </div>
+<% } else { %>
+<div class="admin-table-wrap">
+  <table class="admin-table" id="subscribers-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Joined</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% subscribers.forEach(function(sub) { %>
+      <tr data-name="<%= sub.name.toLowerCase() %>" data-email="<%= sub.email.toLowerCase() %>" data-status="<%= sub.status %>">
+        <td><strong><%= sub.name %></strong></td>
+        <td><%= sub.email %></td>
+        <td><span class="status-badge status-<%= sub.status %>"><%= sub.status.replace('_', ' ') %></span></td>
+        <td><%= new Date(sub.created_at).toLocaleDateString('en-CA', { year:'numeric', month:'short', day:'numeric' }) %></td>
+        <td class="table-actions">
+          <% if (sub.status === 'active' || sub.status === 'past_due') { %>
+            <form action="/admin/subscribers/<%= sub.id %>/cancel" method="POST" onsubmit="return confirm('Cancel this subscriber?')">
+              <button type="submit" class="btn-table-action btn-table-danger">Cancel</button>
+            </form>
+          <% } else if (sub.status === 'cancelled') { %>
+            <form action="/admin/subscribers/<%= sub.id %>/reactivate" method="POST" onsubmit="return confirm('Reactivate this subscriber?')">
+              <button type="submit" class="btn-table-action btn-table-success">Reactivate</button>
+            </form>
+          <% } %>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<div class="table-count" id="table-count">Showing <%= subscribers.length %> subscriber<%= subscribers.length !== 1 ? 's' : '' %></div>
+<% } %>
+
+<script>
+(function() {
+  const searchInput  = document.getElementById('subscriber-search');
+  const statusFilter = document.getElementById('status-filter');
+  const countEl      = document.getElementById('table-count');
+  if (!searchInput) return;
+
+  function filterTable() {
+    const q      = searchInput.value.toLowerCase();
+    const status = statusFilter.value;
+    const rows   = document.querySelectorAll('#subscribers-table tbody tr');
+    let visible  = 0;
+    rows.forEach(function(row) {
+      const name  = row.dataset.name  || '';
+      const email = row.dataset.email || '';
+      const s     = row.dataset.status || '';
+      const matchQ      = !q      || name.includes(q) || email.includes(q);
+      const matchStatus = !status || s === status;
+      const show = matchQ && matchStatus;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    if (countEl) countEl.textContent = 'Showing ' + visible + ' subscriber' + (visible !== 1 ? 's' : '');
+  }
+
+  searchInput.addEventListener('input', filterTable);
+  statusFilter.addEventListener('change', filterTable);
+})();
+</script>
+
+<%- include('partials/bottom') %>

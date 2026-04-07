@@ -1,0 +1,62 @@
+<%- include('partials/head', { title: 'Issue #' + issue.issue_number + ' — ' + issue.subject }) %>
+<%- include('partials/nav') %>
+
+<div class="page-header container">
+  <div class="page-header-meta">
+    <a href="/" class="back-link">← Back</a>
+    <span class="issue-badge">Issue #<%= issue.issue_number %></span>
+    <span class="issue-date"><%= new Date(issue.published_at).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }) %></span>
+  </div>
+  <h1 class="page-title"><%= issue.subject %></h1>
+</div>
+
+<div class="issue-viewer container">
+  <% if (isSubscriber) { %>
+    <!-- Full issue — subscriber -->
+    <div class="issue-frame-wrap issue-frame-full">
+      <iframe
+        src="/issues/<%= issue.id %>/render"
+        class="issue-frame"
+        sandbox="allow-same-origin"
+        title="<%= issue.subject %>"
+        onload="resizeIframe(this)">
+      </iframe>
+    </div>
+  <% } else { %>
+    <!-- Teaser + paywall -->
+    <div class="issue-frame-wrap issue-frame-teaser">
+      <iframe
+        src="/issues/<%= issue.id %>/render"
+        class="issue-frame"
+        sandbox="allow-same-origin"
+        title="<%= issue.subject %> — preview"
+        scrolling="no">
+      </iframe>
+      <div class="paywall-fade"></div>
+    </div>
+    <div class="paywall-block">
+      <div class="paywall-inner">
+        <div class="paywall-lock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3>Subscribe to read the full issue</h3>
+        <p>Get every issue of The Real Scoop — the weekly GTA market brief for serious real estate agents.</p>
+        <div class="paywall-actions">
+          <a href="/#subscribe" class="btn btn-gold btn-lg">Subscribe — $9.99/month</a>
+          <a href="/login" class="btn btn-ghost">Already subscribed? Log in</a>
+        </div>
+        <p class="paywall-note">Cancel anytime · Secure payment via Stripe</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<script>
+function resizeIframe(frame) {
+  try {
+    frame.style.height = frame.contentDocument.body.scrollHeight + 'px';
+  } catch(e) {}
+}
+</script>
+
+<%- include('partials/footer') %>

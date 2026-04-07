@@ -1,0 +1,12 @@
+<%- include('partials/head', { title: 'Error' }) %>
+<%- include('partials/nav') %>
+
+<div class="auth-page">
+  <div class="auth-card auth-card-center">
+    <h1 class="auth-title">Oops</h1>
+    <p class="auth-sub"><%= message || 'Something went wrong. Please try again.' %></p>
+    <a href="/" class="btn btn-primary">Return home</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

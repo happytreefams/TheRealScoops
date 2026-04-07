@@ -1,0 +1,27 @@
+{
+  "name": "therealscoops",
+  "version": "1.0.0",
+  "description": "The Real Scoop - GTA Real Estate Newsletter Platform",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.0",
+    "dotenv": "^16.4.5",
+    "node-sqlite3-wasm": "^0.8.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "multer": "^1.4.5-lts.1",
+    "stripe": "^14.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

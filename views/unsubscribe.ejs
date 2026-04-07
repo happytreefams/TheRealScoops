@@ -1,0 +1,39 @@
+<%- include('partials/head', { title: 'Unsubscribe' }) %>
+<%- include('partials/nav') %>
+
+<div class="auth-page">
+  <div class="auth-card auth-card-center">
+
+    <% if (success === true) { %>
+      <div class="auth-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h1 class="auth-title">You've been unsubscribed</h1>
+      <p class="auth-sub">
+        You've been successfully unsubscribed from The Real Scoop. You won't receive any further emails.
+      </p>
+      <p class="auth-note">Changed your mind? <a href="/#subscribe">Subscribe again anytime</a>.</p>
+
+    <% } else if (error) { %>
+      <h1 class="auth-title">Something went wrong</h1>
+      <p class="auth-sub"><%= error %></p>
+      <a href="/" class="btn btn-ghost">Return home</a>
+
+    <% } else { %>
+      <h1 class="auth-title">Unsubscribe from The Real Scoop</h1>
+      <p class="auth-sub">
+        You're about to unsubscribe <strong><%= subscriber.email %></strong>. Your access will end at the close of your current billing period.
+      </p>
+      <form action="/unsubscribe" method="POST">
+        <input type="hidden" name="token" value="<%= token %>">
+        <button type="submit" class="btn btn-danger btn-full">Confirm unsubscribe</button>
+      </form>
+      <a href="/" class="btn btn-ghost btn-full" style="margin-top:12px">Cancel — keep my subscription</a>
+    <% } %>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>

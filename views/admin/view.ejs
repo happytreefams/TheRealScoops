@@ -1,0 +1,91 @@
+<%- include('partials/top', { pageTitle: 'Issue #' + issue.issue_number, currentPage: 'newsletters' }) %>
+
+<div class="admin-page-header">
+  <div>
+    <a href="/admin/newsletters" class="back-link">← Newsletters</a>
+    <h1>Issue #<%= issue.issue_number %></h1>
+    <p class="admin-page-subtitle"><%= issue.subject %></p>
+  </div>
+  <div class="admin-page-actions">
+    <% if (!issue.sent_at) { %>
+      <form action="/admin/newsletters/<%= issue.id %>/send-test" method="POST" style="display:inline">
+        <button type="submit" class="btn btn-sm btn-ghost">Send test email</button>
+      </form>
+      <form action="/admin/newsletters/<%= issue.id %>/send" method="POST" style="display:inline"
+            onsubmit="return confirm('Send this issue to ALL active subscribers? This cannot be undone.')">
+        <button type="submit" class="btn btn-sm btn-primary">Send to all subscribers</button>
+      </form>
+    <% } else { %>
+      <span class="status-badge status-active">Sent <%= new Date(issue.sent_at).toLocaleDateString('en-CA', { month:'short', day:'numeric' }) %></span>
+    <% } %>
+  </div>
+</div>
+
+<!-- Alerts -->
+<% if (message === 'test_sent') { %>
+  <div class="alert alert-success">Test email sent to <%= adminEmail %>.</div>
+<% } else if (message === 'sent') { %>
+  <div class="alert alert-success">Newsletter sent successfully to <%= sentCount %> subscriber<%= sentCount !== 1 ? 's' : '' %>.</div>
+<% } %>
+<% if (error === 'already_sent') { %>
+  <div class="alert alert-warning">This issue has already been sent.</div>
+<% } else if (error === 'no_subscribers') { %>
+  <div class="alert alert-warning">No active subscribers to send to.</div>
+<% } else if (error && error !== 'already_sent' && error !== 'no_subscribers') { %>
+  <div class="alert alert-error">Error: <%= error %></div>
+<% } %>
+
+<!-- Meta -->
+<div class="issue-meta-row">
+  <div class="issue-meta-item">
+    <span class="meta-label">Issue</span>
+    <span class="meta-value">#<%= issue.issue_number %></span>
+  </div>
+  <div class="issue-meta-item">
+    <span class="meta-label">Published</span>
+    <span class="meta-value"><%= new Date(issue.published_at).toLocaleDateString('en-CA', { year:'numeric', month:'long', day:'numeric' }) %></span>
+  </div>
+  <div class="issue-meta-item">
+    <span class="meta-label">Status</span>
+    <span class="meta-value">
+      <% if (issue.sent_at) { %>
+        <span class="status-badge status-active">Sent</span>
+      <% } else { %>
+        <span class="status-badge status-pending">Draft</span>
+      <% } %>
+    </span>
+  </div>
+  <% if (issue.sent_at) { %>
+  <div class="issue-meta-item">
+    <span class="meta-label">Recipients</span>
+    <span class="meta-value"><%= issue.recipient_count %></span>
+  </div>
+  <% } %>
+</div>
+
+<!-- Preview -->
+<div class="admin-section">
+  <div class="admin-section-header">
+    <h2>Preview</h2>
+    <a href="/issues/<%= issue.id %>" class="btn btn-sm btn-ghost" target="_blank">View as subscriber →</a>
+  </div>
+  <div class="newsletter-admin-preview">
+    <iframe
+      src="/issues/<%= issue.id %>/render"
+      sandbox="allow-same-origin"
+      class="newsletter-admin-frame"
+      title="Issue #<%= issue.issue_number %> preview"
+      onload="resizeAdminFrame(this)">
+    </iframe>
+  </div>
+</div>
+
+<script>
+function resizeAdminFrame(frame) {
+  try {
+    frame.style.height = (frame.contentDocument.body.scrollHeight + 40) + 'px';
+  } catch(e) {}
+}
+</script>
+
+<%- include('partials/bottom') %>

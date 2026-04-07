@@ -1,0 +1,21 @@
+<nav class="nav">
+  <div class="nav-inner container">
+    <a href="/" class="nav-logo">The Real Scoop</a>
+    <div class="nav-links">
+      <% if (locals.isAdmin) { %>
+        <a href="/admin" class="nav-link">Admin</a>
+        <a href="/admin/logout" class="nav-link">Logout</a>
+      <% } else if (locals.subscriberId) { %>
+        <a href="/archive" class="nav-link">Archive</a>
+        <a href="/account" class="nav-link">Account</a>
+        <a href="/logout" class="nav-link">Logout</a>
+      <% } else { %>
+        <a href="/login" class="nav-link">Login</a>
+        <a href="/#subscribe" class="btn btn-sm btn-primary">Subscribe — $9.99/mo</a>
+      <% } %>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>

@@ -1,0 +1,24 @@
+<%- include('partials/head', { title: 'Welcome!' }) %>
+<%- include('partials/nav') %>
+
+<div class="auth-page">
+  <div class="auth-card auth-card-center">
+    <div class="auth-icon-wrap success-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <h1 class="auth-title">You're subscribed!</h1>
+    <p class="auth-sub">
+      Welcome, <%= name %>. Your subscription to The Real Scoop is active.<br>
+      Check your inbox for a welcome email with everything you need to know.
+    </p>
+    <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <a href="/login" class="btn btn-primary">Access your account</a>
+      <a href="/" class="btn btn-ghost">Back to home</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
