@@ -17,45 +17,43 @@ db.exec('PRAGMA foreign_keys = ON');
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS subscribers (
-    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
-    name                  TEXT NOT NULL,
-    email                 TEXT UNIQUE NOT NULL COLLATE NOCASE,
-    stripe_customer_id    TEXT UNIQUE,
-    stripe_subscription_id TEXT UNIQUE,
-    status                TEXT NOT NULL DEFAULT 'pending',
-    unsubscribe_token     TEXT UNIQUE NOT NULL,
-    created_at            TEXT NOT NULL DEFAULT (datetime('now')),
-    updated_at            TEXT NOT NULL DEFAULT (datetime('now'))
-  );
+db.exec(`CREATE TABLE IF NOT EXISTS subscribers (
+  id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+  name                  TEXT NOT NULL,
+  email                 TEXT UNIQUE NOT NULL COLLATE NOCASE,
+  stripe_customer_id    TEXT UNIQUE,
+  stripe_subscription_id TEXT UNIQUE,
+  status                TEXT NOT NULL DEFAULT 'pending',
+  unsubscribe_token     TEXT UNIQUE NOT NULL,
+  created_at            TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at            TEXT NOT NULL DEFAULT (datetime('now'))
+)`);
 
-  CREATE TABLE IF NOT EXISTS magic_links (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    email      TEXT NOT NULL COLLATE NOCASE,
-    token      TEXT UNIQUE NOT NULL,
-    expires_at TEXT NOT NULL,
-    used       INTEGER NOT NULL DEFAULT 0,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
-  );
+db.exec(`CREATE TABLE IF NOT EXISTS magic_links (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  email      TEXT NOT NULL COLLATE NOCASE,
+  token      TEXT UNIQUE NOT NULL,
+  expires_at TEXT NOT NULL,
+  used       INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+)`);
 
-  CREATE TABLE IF NOT EXISTS newsletters (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    issue_number    INTEGER NOT NULL,
-    subject         TEXT NOT NULL,
-    html_content    TEXT NOT NULL,
-    preview_text    TEXT,
-    published_at    TEXT NOT NULL DEFAULT (datetime('now')),
-    sent_at         TEXT,
-    recipient_count INTEGER DEFAULT 0,
-    created_at      TEXT NOT NULL DEFAULT (datetime('now'))
-  );
+db.exec(`CREATE TABLE IF NOT EXISTS newsletters (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  issue_number    INTEGER NOT NULL,
+  subject         TEXT NOT NULL,
+  html_content    TEXT NOT NULL,
+  preview_text    TEXT,
+  published_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  sent_at         TEXT,
+  recipient_count INTEGER DEFAULT 0,
+  created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+)`);
 
-  CREATE INDEX IF NOT EXISTS idx_subscribers_email   ON subscribers(email);
-  CREATE INDEX IF NOT EXISTS idx_subscribers_status  ON subscribers(status);
-  CREATE INDEX IF NOT EXISTS idx_magic_links_token   ON magic_links(token);
-  CREATE INDEX IF NOT EXISTS idx_newsletters_pub     ON newsletters(published_at DESC);
-`);
+db.exec('CREATE INDEX IF NOT EXISTS idx_subscribers_email  ON subscribers(email)');
+db.exec('CREATE INDEX IF NOT EXISTS idx_subscribers_status ON subscribers(status)');
+db.exec('CREATE INDEX IF NOT EXISTS idx_magic_links_token  ON magic_links(token)');
+db.exec('CREATE INDEX IF NOT EXISTS idx_newsletters_pub    ON newsletters(published_at DESC)');
 
 // ─── Subscriber helpers ───────────────────────────────────────────────────────
 
