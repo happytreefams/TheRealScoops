@@ -9,6 +9,8 @@
 
 <% if (message === 'uploaded') { %>
   <div class="alert alert-success">Issue uploaded successfully.</div>
+<% } else if (message === 'deleted') { %>
+  <div class="alert alert-success">Issue deleted.</div>
 <% } %>
 
 <% if (newsletters.length === 0) { %>
@@ -44,7 +46,13 @@
         </td>
         <td><%= n.sent_at ? new Date(n.sent_at).toLocaleDateString('en-CA', { month:'short', day:'numeric' }) : '—' %></td>
         <td><%= n.recipient_count || '—' %></td>
-        <td><a href="/admin/newsletters/<%= n.id %>" class="table-link">Manage →</a></td>
+        <td class="table-actions">
+          <a href="/admin/newsletters/<%= n.id %>" class="btn-table-action" style="text-decoration:none;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600;color:#1B365D;border:1.5px solid #d1d5db;background:#fff">Manage</a>
+          <a href="/admin/newsletters/<%= n.id %>/edit" class="btn-table-action" style="text-decoration:none;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600;color:#D97706;border:1.5px solid #fde68a;background:#fffbeb">Edit</a>
+          <form action="/admin/newsletters/<%= n.id %>/delete" method="POST" style="display:inline" onsubmit="return confirm('Delete Issue #<%= n.issue_number %>? This cannot be undone.')">
+            <button type="submit" class="btn-table-action btn-table-danger">Delete</button>
+          </form>
+        </td>
       </tr>
       <% }); %>
     </tbody>

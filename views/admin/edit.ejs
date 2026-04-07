@@ -1,0 +1,43 @@
+<%- include('partials/top', { pageTitle: 'Edit Issue #' + issue.issue_number, currentPage: 'newsletters' }) %>
+
+<div class="admin-page-header">
+  <div>
+    <a href="/admin/newsletters/<%= issue.id %>" class="back-link">← Back to issue</a>
+    <h1>Edit Issue #<%= issue.issue_number %></h1>
+    <p class="admin-page-subtitle">Update subject, preview text, or issue number. HTML content cannot be changed — delete and re-upload if needed.</p>
+  </div>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<div class="admin-form-card">
+  <form action="/admin/newsletters/<%= issue.id %>/edit" method="POST" class="admin-form">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="issue_number">Issue number</label>
+        <input type="number" id="issue_number" name="issue_number" value="<%= issue.issue_number %>" min="1" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="subject">Subject line <span class="required">*</span></label>
+      <input type="text" id="subject" name="subject" value="<%= issue.subject %>" required>
+    </div>
+
+    <div class="form-group">
+      <label for="preview_text">Preview text</label>
+      <input type="text" id="preview_text" name="preview_text" value="<%= issue.preview_text || '' %>">
+      <p class="form-hint">Short teaser shown on the landing page and archive listings.</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save changes</button>
+      <a href="/admin/newsletters/<%= issue.id %>" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('partials/bottom') %>

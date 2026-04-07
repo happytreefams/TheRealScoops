@@ -179,6 +179,33 @@ router.get('/newsletters/:id', requireAdmin, (req, res) => {
   });
 });
 
+// Edit newsletter metadata (subject, preview text, issue number — NOT the HTML)
+router.get('/newsletters/:id/edit', requireAdmin, (req, res) => {
+  const issue = newsletters.findById(req.params.id);
+  if (!issue) return res.redirect('/admin/newsletters');
+  res.render('admin/edit', { issue, error: null });
+});
+
+router.post('/newsletters/:id/edit', requireAdmin, (req, res) => {
+  const issue = newsletters.findById(req.params.id);
+  if (!issue) return res.redirect('/admin/newsletters');
+
+  const { subject, preview_text, issue_number } = req.body;
+  if (!subject || !subject.trim()) {
+    return res.render('admin/edit', { issue, error: 'Subject line is required.' });
+  }
+
+  const issueNum = parseInt(issue_number, 10) || issue.issue_number;
+  newsletters.update(issue.id, subject.trim(), (preview_text || '').trim() || null, issueNum);
+  res.redirect(`/admin/newsletters/${issue.id}?message=updated`);
+});
+
+// Delete newsletter
+router.post('/newsletters/:id/delete', requireAdmin, (req, res) => {
+  newsletters.deleteById(req.params.id);
+  res.redirect('/admin/newsletters?message=deleted');
+});
+
 // Send test email
 router.post('/newsletters/:id/send-test', requireAdmin, async (req, res) => {
   const issue = newsletters.findById(req.params.id);

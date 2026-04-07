@@ -57,7 +57,7 @@ async function sendWelcomeEmail(toEmail, name, unsubscribeToken) {
           You're now a subscriber to The Real Scoop — the weekly GTA real estate market brief trusted by agents across the 416 and 905.
         </p>
         <p style="color:#4B5563;margin:0 0 28px;line-height:1.6">
-          Every week you'll receive a concise, data-driven snapshot of what's moving in the market — active listings, absorption rates, benchmark prices, and the key trends every serious agent needs to know.
+          Every Monday before 9 AM Eastern you'll receive a concise, data-driven snapshot of what's moving in the market — active listings, absorption rates, benchmark prices, and the key trends every serious agent needs to know.
         </p>
         <a href="${BASE_URL}/archive"
            style="display:inline-block;background:#1B365D;color:#fff;text-decoration:none;

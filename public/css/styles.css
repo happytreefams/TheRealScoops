@@ -154,6 +154,10 @@ input, textarea, select { font-family: inherit; }
 .btn-ghost    { background: transparent; color: var(--navy); border-color: var(--gray-200); }
 .btn-ghost:hover { border-color: var(--navy); background: var(--gray-50); }
 
+/* Ghost button for use on dark/navy backgrounds */
+.btn-ghost-hero { background: transparent; color: #FFFFFF; border-color: rgba(255,255,255,0.4); }
+.btn-ghost-hero:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.8); color: #FFFFFF; }
+
 .btn-outline  { background: transparent; color: var(--navy); border-color: var(--navy); }
 .btn-outline:hover { background: var(--navy); color: var(--white); }
 

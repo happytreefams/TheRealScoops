@@ -7,6 +7,7 @@
     <p class="admin-page-subtitle"><%= issue.subject %></p>
   </div>
   <div class="admin-page-actions">
+    <a href="/admin/newsletters/<%= issue.id %>/edit" class="btn btn-sm btn-ghost">Edit details</a>
     <% if (!issue.sent_at) { %>
       <form action="/admin/newsletters/<%= issue.id %>/send-test" method="POST" style="display:inline">
         <button type="submit" class="btn btn-sm btn-ghost">Send test email</button>
@@ -22,7 +23,9 @@
 </div>
 
 <!-- Alerts -->
-<% if (message === 'test_sent') { %>
+<% if (message === 'updated') { %>
+  <div class="alert alert-success">Issue details updated.</div>
+<% } else if (message === 'test_sent') { %>
   <div class="alert alert-success">Test email sent to <%= adminEmail %>.</div>
 <% } else if (message === 'sent') { %>
   <div class="alert alert-success">Newsletter sent successfully to <%= sentCount %> subscriber<%= sentCount !== 1 ? 's' : '' %>.</div>

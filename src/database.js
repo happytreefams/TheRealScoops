@@ -221,6 +221,18 @@ const newsletters = {
     const row = db.prepare('SELECT MAX(issue_number) as max FROM newsletters').get();
     return (row.max || 0) + 1;
   },
+
+  deleteById(id) {
+    return db.prepare('DELETE FROM newsletters WHERE id = ?').run(id);
+  },
+
+  update(id, subject, previewText, issueNumber) {
+    return db.prepare(`
+      UPDATE newsletters
+      SET subject = ?, preview_text = ?, issue_number = ?
+      WHERE id = ?
+    `).run(subject, previewText || null, issueNumber, id);
+  },
 };
 
 module.exports = { db, subscribers, magicLinks, newsletters };

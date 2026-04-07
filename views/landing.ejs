@@ -1,4 +1,4 @@
-<%- include('partials/head', { title: null }) %>
+<%- include('partials/head', {}) %>
 <%- include('partials/nav') %>
 
 <% if (error === 'email' || error === 'name') { %>
@@ -24,7 +24,7 @@
     </p>
     <div class="hero-cta">
       <a href="#subscribe" class="btn btn-gold btn-lg">Subscribe for $9.99/month</a>
-      <a href="#issues" class="btn btn-ghost btn-lg">See recent issues</a>
+      <a href="#issues" class="btn btn-ghost-hero btn-lg">See recent issues</a>
     </div>
     <div class="hero-social-proof">
       <div class="proof-stat">
@@ -33,8 +33,8 @@
       </div>
       <div class="proof-divider"></div>
       <div class="proof-stat">
-        <strong>Weekly</strong>
-        <span>every Monday morning</span>
+        <strong>Every Monday</strong>
+        <span>before 9 AM Eastern</span>
       </div>
       <div class="proof-divider"></div>
       <div class="proof-stat">
@@ -167,7 +167,7 @@
       <div class="step">
         <div class="step-number">02</div>
         <h4>Arrives Monday morning</h4>
-        <p>Every Monday before 7 AM, the week's market brief lands in your inbox — ready before your first client call.</p>
+        <p>Every Monday before 9 AM Eastern, the week's market brief lands in your inbox — ready before your first client call.</p>
       </div>
       <div class="step-arrow">→</div>
       <div class="step">
@@ -205,14 +205,20 @@
           <li><span class="check">✓</span> Cancel anytime — no lock-in</li>
         </ul>
         <div id="subscribe" class="pricing-form">
+          <% if (error === 'server') { %>
+            <div class="alert alert-error" style="margin-bottom:16px">
+              Something went wrong. Please try again or contact <a href="mailto:info@therealscoops.com">info@therealscoops.com</a>
+            </div>
+          <% } %>
+          <div id="subscribe-error" class="alert alert-error" style="display:none;margin-bottom:16px"></div>
           <form action="/subscribe" method="POST" class="subscribe-form">
             <div class="form-group">
               <label for="subscribe-name">Your name</label>
-              <input type="text" id="subscribe-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+              <input type="text" id="subscribe-name" name="name" placeholder="Jane Smith" autocomplete="name">
             </div>
             <div class="form-group">
               <label for="subscribe-email">Email address</label>
-              <input type="email" id="subscribe-email" name="email" placeholder="jane@brokerage.com" required autocomplete="email">
+              <input type="email" id="subscribe-email" name="email" placeholder="jane@brokerage.com" autocomplete="email">
             </div>
             <button type="submit" class="btn btn-gold btn-full btn-lg">
               Subscribe for $9.99/month
@@ -269,7 +275,7 @@
     <div class="faq-list">
       <details class="faq-item">
         <summary>When does each issue arrive?</summary>
-        <p>Every Monday morning before 7 AM Eastern. You'll have it before your first client call of the week.</p>
+        <p>Every Monday before 9 AM Eastern. You'll have it before your first client call of the week.</p>
       </details>
       <details class="faq-item">
         <summary>What markets are covered?</summary>

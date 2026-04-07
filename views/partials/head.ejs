@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof title !== 'undefined' ? title + ' | The Real Scoop' : 'The Real Scoop — GTA Real Estate Market Brief' %></title>
-  <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'The weekly GTA real estate market brief for serious agents. Benchmark prices, absorption rates, and market trends — every week.' %>">
+  <title><%= (typeof title !== 'undefined' && title) ? title + ' | The Real Scoop' : 'The Real Scoop — GTA Real Estate Market Intelligence' %></title>
+  <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'The weekly GTA real estate market brief for serious agents. Benchmark prices, absorption rates, and market trends — every Monday before 9 AM Eastern.' %>">
+  <meta property="og:title" content="The Real Scoop — GTA Real Estate Market Intelligence">
+  <meta property="og:description" content="The weekly GTA market brief trusted by agents across the 416 and 905. Benchmark prices, absorption rates, DOM, and key trends — every Monday.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://therealscoops.com">
+  <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
