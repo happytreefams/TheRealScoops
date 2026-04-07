@@ -13,7 +13,6 @@ if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 const db = new Database(dbPath);
 
 // Performance tuning
-db.exec('PRAGMA journal_mode = WAL');
 db.exec('PRAGMA foreign_keys = ON');
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
