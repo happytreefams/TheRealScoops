@@ -46,9 +46,9 @@
             <form action="/admin/subscribers/<%= sub.id %>/cancel" method="POST" onsubmit="return confirm('Cancel this subscriber?')">
               <button type="submit" class="btn-table-action btn-table-danger">Cancel</button>
             </form>
-          <% } else if (sub.status === 'cancelled') { %>
-            <form action="/admin/subscribers/<%= sub.id %>/reactivate" method="POST" onsubmit="return confirm('Reactivate this subscriber?')">
-              <button type="submit" class="btn-table-action btn-table-success">Reactivate</button>
+          <% } else if (sub.status === 'cancelled' || sub.status === 'pending') { %>
+            <form action="/admin/subscribers/<%= sub.id %>/activate" method="POST" onsubmit="return confirm('Manually activate this subscriber?')">
+              <button type="submit" class="btn-table-action btn-table-success">Activate</button>
             </form>
           <% } %>
         </td>

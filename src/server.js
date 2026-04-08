@@ -72,5 +72,5 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 // ─── Start ────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`The Real Scoop running on http://localhost:${PORT}`);
+  console.log(`The Real Scoops running on http://localhost:${PORT}`);
 });

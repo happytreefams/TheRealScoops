@@ -102,7 +102,13 @@ router.post('/subscribers/:id/cancel', requireAdmin, async (req, res) => {
   res.redirect('/admin/subscribers');
 });
 
-// Reactivate subscriber
+// Manually activate a pending subscriber (bypass Stripe — use when webhook missed)
+router.post('/subscribers/:id/activate', requireAdmin, (req, res) => {
+  subscribers.updateStatusById(req.params.id, 'active');
+  res.redirect('/admin/subscribers');
+});
+
+// Reactivate subscriber (un-cancel in Stripe)
 router.post('/subscribers/:id/reactivate', requireAdmin, async (req, res) => {
   const subscriber = subscribers.findById(req.params.id);
   if (!subscriber) return res.redirect('/admin/subscribers');
