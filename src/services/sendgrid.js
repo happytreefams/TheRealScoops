@@ -120,7 +120,7 @@ async function sendTestEmail(subject, htmlContent) {
   await sgMail.send({
     to:      adminEmail,
     from:    FROM,
-    subject: `[TEST] ${subject}`,
+    subject,
     html:    wrapped,
   });
 }
@@ -163,11 +163,6 @@ function wrapNewsletterHtml(htmlContent, unsubscribeUrl) {
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#F8F7F4;font-family:Inter,Arial,sans-serif">
   <div style="max-width:680px;margin:0 auto">
-    <!-- Header -->
-    <div style="background:#1B365D;padding:20px 32px">
-      <span style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px">The Real Scoops</span>
-      <span style="font-size:13px;color:rgba(255,255,255,0.6);margin-left:12px">GTA Real Estate Market Brief</span>
-    </div>
     <!-- Content -->
     <div style="background:#fff">
       ${htmlContent}
